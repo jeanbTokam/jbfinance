@@ -1,0 +1,25 @@
+# Local Jenkins controller for developing the jbfinance pipeline.
+#
+#   docker compose -f ci/jenkins/docker-compose.yml up -d --build
+#
+# Then expose port 8080 to GitHub with a tunnel (see ci/jenkins/README.md) so
+# GitHub webhooks and the GitHub App callback can reach it.
+services:
+  jenkins:
+    build: .
+    container_name: jbfinance-jenkins
+    restart: unless-stopped
+    ports:
+      - "8080:8080"     # web UI
+      - "50000:50000"   # inbound agents
+    environment:
+      # Public URL of this controller once tunnelled - update after `cloudflared` / `ngrok` gives you one.
+      JENKINS_URL: "https://REPLACE-ME.trycloudflare.com/"
+      JAVA_OPTS: "-Djenkins.install.runSetupWizard=true"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      # Lets the Docker Pipeline agent in the Jenkinsfile use the host daemon.
+      - /var/run/docker.sock:/var/run/docker.sock
+
+volumes:
+  jenkins_home:

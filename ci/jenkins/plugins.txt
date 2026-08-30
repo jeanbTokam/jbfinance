@@ -1,0 +1,15 @@
+# Minimum plugin set for the jbfinance Multibranch pipeline.
+workflow-aggregator          # Pipeline
+pipeline-stage-view          # Stage view UI
+git
+github
+github-branch-source         # discovers branches + PRs, posts commit status
+github-checks                # rich GitHub Checks output (publishChecks step)
+docker-workflow              # agent { docker { ... } }
+credentials
+credentials-binding
+plain-credentials
+configuration-as-code        # optional: casc.yaml support
+timestamper
+ws-cleanup
+antisamy-markup-formatter
