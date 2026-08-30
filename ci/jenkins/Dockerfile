@@ -2,7 +2,7 @@
 # Adds the Docker CLI so the Jenkinsfile's `agent { docker { ... } }` can talk to
 # the host Docker daemon (socket mounted in docker-compose.yml), and preinstalls
 # the plugins the pipeline needs.
-FROM jenkins/jenkins:2.516.1-lts-jdk21
+FROM jenkins/jenkins:lts-jdk21
 
 USER root
 RUN apt-get update \
