@@ -59,15 +59,22 @@ pipeline {
     stage('Resolve Nx range') {
       steps {
         script {
+          env.NX_RANGE = 'run-many'
           if (env.CHANGE_TARGET) {
-            // Pull request build: only touch projects affected vs the target branch.
-            sh "git fetch --no-tags --depth=200 origin ${env.CHANGE_TARGET}"
-            env.NX_RANGE = "affected --base=origin/${env.CHANGE_TARGET} --head=HEAD"
-          } else {
-            // Branch / main build: run everything.
-            env.NX_RANGE = 'run-many'
+            // Pull request build: scope to projects affected vs the target branch.
+            // Fetch the target into its remote-tracking ref so `origin/<target>`
+            // resolves - a plain `git fetch origin <target>` only writes FETCH_HEAD.
+            def fetched = sh(
+              script: "git fetch --no-tags --depth=200 origin +refs/heads/${env.CHANGE_TARGET}:refs/remotes/origin/${env.CHANGE_TARGET}",
+              returnStatus: true,
+            )
+            if (fetched == 0) {
+              env.NX_RANGE = "affected --base=origin/${env.CHANGE_TARGET} --head=HEAD"
+            } else {
+              echo "Could not fetch ${env.CHANGE_TARGET}; falling back to run-many"
+            }
           }
-          echo "nx ${env.NX_RANGE} -t <target>"
+          echo "nx invocation: nx ${env.NX_RANGE} -t <target>"
         }
       }
     }
