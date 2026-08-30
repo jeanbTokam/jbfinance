@@ -1,0 +1,4 @@
+# CI infrastructure, not an Nx project. Without this the @nx/docker plugin
+# infers a nameless project from ci/jenkins/Dockerfile and the graph fails with
+# ProjectsWithNoNameError.
+ci
