@@ -4,6 +4,14 @@
 
 ✨ A repository showcasing key [Nx](https://nx.dev) features for Angular monorepos ✨
 
+## 🔧 CI
+
+Every push and pull request is built by a Jenkins multibranch pipeline
+([`Jenkinsfile`](Jenkinsfile)): `nx affected` runs `lint`, `test`, `typecheck`,
+`build`, then Playwright `e2e`. The result is reported back to GitHub as the
+`continuous-integration/jenkins/*` check. A PR into `main` requires that check
+to pass plus one approving review before it can be merged.
+
 🚀 If you haven't connected to Nx Cloud yet, [complete your setup here](https://cloud.nx.app/setup/connect-workspace/guide). Get faster builds with remote caching, distributed task execution, and self-healing CI. [See how your workspace can benefit](#nx-cloud).
 
 ## 📦 Project Overview
